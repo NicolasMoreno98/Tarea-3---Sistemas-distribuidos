@@ -26,3 +26,93 @@ etc.)
 docker-compose logs -f pig_analysis
 
 .\view-results.ps1
+
+# 1. Partir de cero
+docker-compose down -v
+
+# 2. Construir
+docker-compose build
+
+# 3. Ejecutar
+docker-compose up -d
+
+# 4. Ver logs
+docker-compose logs -f pig_analysis
+
+# 5. Ver resultados
+.\show-results.ps1
+
+# 6. Limpiar
+.\cleanup.ps1
+
+pig_analysis  | ====================================
+pig_analysis  |   Top 20 palabras - HUMANOS
+pig_analysis  | ====================================
+pig_analysis  | n       3613
+pig_analysis  | one     1912
+pig_analysis  | get     1621
+pig_analysis  | like    1570
+pig_analysis  | just    1434
+pig_analysis  | also    1326
+pig_analysis  | people  1307
+pig_analysis  | time    1300
+pig_analysis  | good    1119
+pig_analysis  | think   1075
+pig_analysis  | go      1044
+pig_analysis  | know    1033
+pig_analysis  | make    1010
+pig_analysis  | want    928
+pig_analysis  | see     920
+pig_analysis  | may     914
+pig_analysis  | use     904
+pig_analysis  | many    884
+pig_analysis  | way     827
+pig_analysis  | first   790
+pig_analysis  |
+pig_analysis  | ====================================
+pig_analysis  |   Top 20 palabras - LLM
+pig_analysis  | ====================================
+pig_analysis  | yes     934
+pig_analysis  | several 893
+pig_analysis  | provide 815
+pig_analysis  | including       723
+pig_analysis  | personal        618
+pig_analysis  | ai      417
+pig_analysis  | just    410
+pig_analysis  | steps   407
+pig_analysis  | people  404
+pig_analysis  | best    367
+pig_analysis  | follow  343
+pig_analysis  | answer  334
+pig_analysis  | information     328
+pig_analysis  | question        327
+pig_analysis  | use     319
+pig_analysis  | make    315
+pig_analysis  | reasons 296
+pig_analysis  | various 288
+pig_analysis  | may     285
+pig_analysis  | yahoo   264
+pig_analysis  |
+pig_analysis  | ====================================
+pig_analysis  |   Top 20 diferencias
+pig_analysis  | ====================================
+pig_analysis  | n       3613    7       3606
+pig_analysis  | one     1912    221     1691
+pig_analysis  | like    1570    144     1426
+pig_analysis  | get     1621    204     1417
+pig_analysis  | also    1326    163     1163
+pig_analysis  | time    1300    235     1065
+pig_analysis  | think   1075    41      1034
+pig_analysis  | just    1434    410     1024
+pig_analysis  | know    1033    41      992
+pig_analysis  | go      1044    56      988
+pig_analysis  | good    1119    171     948
+pig_analysis  | people  1307    404     903
+pig_analysis  | see     920     33      887
+pig_analysis  | want    928     62      866
+pig_analysis  | many    884     188     696
+pig_analysis  | make    1010    315     695
+pig_analysis  | provide 126     815     689
+pig_analysis  | several 206     893     687
+pig_analysis  | first   790     114     676
+pig_analysis  | http    672     5       667

@@ -44,6 +44,10 @@ def export_data():
         print("ERROR: No se pudo conectar a PostgreSQL")
         return
     
+    # Esperar unos segundos adicionales para que dataloader termine de insertar datos
+    print("Esperando a que dataloader complete la carga...")
+    time.sleep(15)
+    
     # Conectar a PostgreSQL
     print("Conectando a PostgreSQL...")
     conn = psycopg2.connect(**db_config)
