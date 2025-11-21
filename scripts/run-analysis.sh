@@ -120,7 +120,9 @@ echo "docker exec hadoop_namenode hdfs dfs -cat /output/comparison/part-*"
 echo ""
 echo "EXITO: Procesamiento completado exitosamente!"
 echo ""
-echo "El contenedor se cerrara en 10 segundos..."
-sleep 10
+echo "=== Resultados disponibles en HDFS ===" 
+echo "Usa docker-compose down para detener los servicios"
+echo ""
 
-# Contenedor se detiene automaticamente al finalizar el script
+# Mantener el contenedor vivo para poder ver los resultados
+tail -f /dev/null
