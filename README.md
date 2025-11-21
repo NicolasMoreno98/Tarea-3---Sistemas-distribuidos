@@ -5,22 +5,22 @@ Este proyecto implementa un sistema de análisis batch para comparar respuestas 
 
 ---
 
-## 📋 Descripción
+## Descripcion
 
 El sistema realiza análisis de frecuencia de palabras (WordCount) sobre dos conjuntos de datos:
 1. **Respuestas de usuarios de Yahoo! Answers**
 2. **Respuestas generadas por un LLM**
 
 El procesamiento incluye:
-- ✅ Tokenización de texto
-- ✅ Limpieza (minúsculas, eliminación de puntuación)
-- ✅ Filtrado de stopwords (español e inglés)
-- ✅ Conteo de frecuencia de palabras
-- ✅ Análisis comparativo entre ambos conjuntos
+- Tokenizacion de texto
+- Limpieza (minusculas, eliminacion de puntuacion)
+- Filtrado de stopwords (espanol e ingles)
+- Conteo de frecuencia de palabras
+- Analisis comparativo entre ambos conjuntos
 
 ---
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 ```
 ┌─────────────────┐
@@ -56,7 +56,7 @@ El procesamiento incluye:
 
 ---
 
-## 🚀 Componentes
+## Componentes
 
 ### Servicios Docker
 
@@ -90,7 +90,7 @@ El procesamiento incluye:
 
 ---
 
-## 📦 Requisitos
+## Requisitos
 
 - Docker Desktop
 - Docker Compose
@@ -99,7 +99,7 @@ El procesamiento incluye:
 
 ---
 
-## 🔧 Instalación y Ejecución
+## Instalacion y Ejecucion
 
 ### 1. Clonar/Ubicar el proyecto
 
@@ -172,7 +172,7 @@ docker-compose logs -f namenode
 
 ---
 
-## 📊 Acceso a Interfaces Web
+## Acceso a Interfaces Web
 
 Una vez que los servicios estén corriendo:
 
@@ -188,7 +188,7 @@ Una vez que los servicios estén corriendo:
 
 ---
 
-## 🔍 Resultados del Análisis
+## Resultados del Analisis
 
 ### Ubicación de Resultados en HDFS
 
@@ -249,7 +249,7 @@ docker cp hadoop_namenode:/opt/hadoop/results_comparison .\results\
 
 ---
 
-## 📈 Formato de Resultados
+## Formato de Resultados
 
 ### WordCount (human_wordcount, llm_wordcount)
 
@@ -278,7 +278,7 @@ information	3456	2987	469
 
 ---
 
-## 🛠️ Comandos Útiles
+## Comandos Utiles
 
 ### Gestión de Contenedores
 
@@ -355,7 +355,7 @@ docker system prune -a
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Problema: PostgreSQL no inicia
 
@@ -419,7 +419,7 @@ docker exec -it hadoop_namenode ping datanode
 
 ---
 
-## 📚 Tecnologías Utilizadas
+## Tecnologias Utilizadas
 
 - **PostgreSQL 15**: Base de datos relacional
 - **Hadoop 3.3.6**: Framework de procesamiento distribuido
@@ -430,7 +430,7 @@ docker exec -it hadoop_namenode ping datanode
 
 ---
 
-## 📝 Estructura de Datos
+## Estructura de Datos
 
 ### Schema de PostgreSQL
 
@@ -456,9 +456,9 @@ CREATE TABLE responses (
 
 ---
 
-## 🎯 Características Implementadas
+## Caracteristicas Implementadas
 
-### ✅ Requisitos Cumplidos
+### Requisitos Cumplidos
 
 - [x] **Ingesta de Datos**: Extracción desde PostgreSQL
 - [x] **Ecosistema Hadoop**: HDFS configurado y funcionando
@@ -471,7 +471,7 @@ CREATE TABLE responses (
 - [x] **Docker**: Completamente containerizado
 - [x] **Docker Compose**: Orquestación de servicios
 
-### 🚀 Características Adicionales
+### Caracteristicas Adicionales
 
 - [x] Top 100 palabras más frecuentes por cada conjunto
 - [x] Análisis de diferencias entre conjuntos
@@ -482,19 +482,19 @@ CREATE TABLE responses (
 
 ---
 
-## 👥 Autor
+## Autor
 
 **Tarea 3 - Sistemas Distribuidos 2025-2**
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto es parte de una tarea académica para el curso de Sistemas Distribuidos.
 
 ---
 
-## 🙏 Agradecimientos
+## Agradecimientos
 
 - Dataset basado en Yahoo! Answers
 - Apache Hadoop y Apache Pig communities
@@ -502,7 +502,7 @@ Este proyecto es parte de una tarea académica para el curso de Sistemas Distrib
 
 ---
 
-## 📞 Soporte
+## Soporte
 
 Si encuentras problemas:
 
@@ -513,7 +513,7 @@ Si encuentras problemas:
 
 ---
 
-**¡Listo para ejecutar!** 🚀
+**Listo para ejecutar!**
 
 ```powershell
 docker-compose up -d

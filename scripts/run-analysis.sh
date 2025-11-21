@@ -11,7 +11,7 @@ until hdfs dfs -ls / &>/dev/null; do
     echo "Esperando HDFS..."
     sleep 5
 done
-echo "✓ HDFS disponible"
+echo "OK: HDFS disponible"
 
 echo "=== Esperando a que los datos se exporten ==="
 max_attempts=60
@@ -25,12 +25,12 @@ while [ ! -f "/data/export/human_answers.txt" ] || [ ! -f "/data/export/llm_answ
         exit 1
     fi
 done
-echo "✓ Datos exportados encontrados"
+echo "OK: Datos exportados encontrados"
 
 echo "=== Creando directorios en HDFS ==="
 hdfs dfs -mkdir -p /input
 hdfs dfs -mkdir -p /output
-echo "✓ Directorios creados"
+echo "OK: Directorios creados"
 
 echo "=== Copiando datos a HDFS ==="
 
@@ -65,7 +65,7 @@ echo "=== Ejecutando análisis con Apache Pig ==="
 echo ""
 echo "1/3: Analizando respuestas humanas..."
 pig -x mapreduce -brief /pig/analyze_human.pig 2>&1 | grep -E '(complete|MapReduce Jobs Launched|Success|Failed)' || true
-echo "✓ Análisis humano completado"
+echo "OK: Analisis humano completado"
 
 # Esperar a que termine completamente
 sleep 10
@@ -74,16 +74,16 @@ sleep 10
 echo ""
 echo "2/3: Analizando respuestas LLM..."
 pig -x mapreduce -brief /pig/analyze_llm.pig 2>&1 | grep -E '(complete|MapReduce Jobs Launched|Success|Failed)' || true
-echo "✓ Análisis LLM completado"
+echo "OK: Analisis LLM completado"
 
 # Esperar a que termine completamente
 sleep 10
 
 # Análisis comparativo
 echo ""
-echo "3/3: Realizando análisis comparativo..."
+echo "3/3: Realizando analisis comparativo..."
 pig -x mapreduce -brief /pig/compare_results.pig 2>&1 | grep -E '(complete|MapReduce Jobs Launched|Success|Failed)' || true
-echo "✓ Análisis comparativo completado"
+echo "OK: Analisis comparativo completado"
 
 echo ""
 echo "=== Análisis completados ==="
@@ -118,7 +118,7 @@ echo "docker exec hadoop_namenode hdfs dfs -cat /output/llm_wordcount/part-*"
 echo "docker exec hadoop_namenode hdfs dfs -cat /output/comparison/part-*"
 
 echo ""
-echo "✅ ¡Procesamiento completado exitosamente!"
+echo "EXITO: Procesamiento completado exitosamente!"
 
 # Mantener el contenedor vivo para inspección
 tail -f /dev/null

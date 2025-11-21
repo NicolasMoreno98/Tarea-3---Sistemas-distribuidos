@@ -21,7 +21,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-Write-Host "✓ Docker OK" -ForegroundColor Green
+Write-Host "OK: Docker listo" -ForegroundColor Green
 Write-Host ""
 
 # Verificar que response.json existe
@@ -31,7 +31,7 @@ if (-Not (Test-Path "response.json")) {
     exit 1
 }
 
-Write-Host "✓ response.json encontrado" -ForegroundColor Green
+Write-Host "OK: response.json encontrado" -ForegroundColor Green
 Write-Host ""
 
 # Limpiar contenedores anteriores si existen
@@ -48,7 +48,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-Write-Host "✓ Imágenes construidas" -ForegroundColor Green
+Write-Host "OK: Imagenes construidas" -ForegroundColor Green
 Write-Host ""
 
 # Iniciar servicios
@@ -59,7 +59,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-Write-Host "✓ Servicios iniciados" -ForegroundColor Green
+Write-Host "OK: Servicios iniciados" -ForegroundColor Green
 Write-Host ""
 
 # Mostrar información

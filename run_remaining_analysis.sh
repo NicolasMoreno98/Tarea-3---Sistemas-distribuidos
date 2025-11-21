@@ -6,10 +6,10 @@ check_job_complete() {
     while true; do
         status=$(yarn application -status $app_id 2>/dev/null | grep "Final-State" | awk '{print $3}')
         if [[ "$status" == "SUCCEEDED" ]]; then
-            echo "✓ Job completado exitosamente"
+            echo "OK: Job completado exitosamente"
             return 0
         elif [[ "$status" == "FAILED" ]] || [[ "$status" == "KILLED" ]]; then
-            echo "✗ Job falló"
+            echo "ERROR: Job fallo"
             return 1
         fi
         sleep 5
@@ -42,9 +42,9 @@ wait_for_pig
 
 # Verificar resultados LLM
 if hdfs dfs -test -e /output/llm_wordcount; then
-    echo "✓ Análisis LLM completado"
+    echo "OK: Analisis LLM completado"
 else
-    echo "⚠ Advertencia: No se encontraron resultados LLM"
+    echo "ADVERTENCIA: No se encontraron resultados LLM"
 fi
 
 # Análisis 3: Comparación
@@ -72,16 +72,16 @@ echo "RESULTADOS - Top 20"
 echo "=========================================="
 
 echo ""
-echo "📊 Palabras más frecuentes - HUMANOS:"
+echo "Palabras mas frecuentes - HUMANOS:"
 hdfs dfs -cat /output/human_top100/part-r-00000 2>/dev/null | head -20
 
 echo ""
-echo "📊 Palabras más frecuentes - LLM:"
+echo "Palabras mas frecuentes - LLM:"
 hdfs dfs -cat /output/llm_top100/part-r-00000 2>/dev/null | head -20
 
 echo ""
-echo "📊 Mayores diferencias entre HUMANOS y LLM:"
+echo "Mayores diferencias entre HUMANOS y LLM:"
 hdfs dfs -cat /output/top_differences/part-r-00000 2>/dev/null | head -20
 
 echo ""
-echo "✅ Proceso completo finalizado"
+echo "EXITO: Proceso completo finalizado"
