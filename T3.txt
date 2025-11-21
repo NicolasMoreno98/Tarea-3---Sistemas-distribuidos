@@ -1,0 +1,28 @@
+Puedes ayudarme a hacer la tarea descrita en Tarea_3? 
+En response.json tengo 9738 respuestas de la LLM con "question_id" el id de la pregunta, "question" la pregunta hecha, "human_answer" la respuesta dada por un humano en yahoo respuestas y "llm_answer" la respuesta dada por la LLM. 
+
+Todo tiene que ser dockerisado, partiendo con pasar las respuestas de response.json a una base de datos, despues siguiendo esta rubrica:
+Ingesta de Datos: El sistema debe ser capaz de extraer las respuestas de Yahoo! y las respuestas del
+LLM desde la base de datos persistente del proyecto (o un dump).
+Ecosistema Hadoop: Se debe implementar un entorno de Hadoop. El uso de HDFS para el almacenamiento de los datos de entrada y salida es fundamental.
+Procesamiento con Apache Pig: La lógica de análisis de texto debe ser implementada obligatoriamente
+usando Apache Pig. Los scripts de Pig deberán ejecutar un proceso MapReduce para el conteo de palabras.
+Análisis de Frecuencia de Palabras: El script de Pig debe realizar como MÍNIMO las siguientes
+tareas de procesamiento de texto:
+Proyecto Sistemas Distribuidos - Entregable 2 2025-1
+• Tokenización: Separar cada respuesta en palabras individuales.
+• Limpieza: Convertir el texto a minúsculas, eliminar signos de puntuación y filtrar stopwords comunes
+(ej. “el”, “la”, “que”, “de”, etc.).
+• Conteo: Calcular la frecuencia de cada palabra (WordCount).
+Análisis Comparativo: El análisis debe realizarse por separado para los dos conjuntos de datos:
+• Las respuestas de los usuarios de Yahoo!.
+• Las respuestas generadas por el LLM. El objetivo es poder comparar los resultados de ambos.
+Distribución y Despliegue: El servicio de análisis, incluyendo el entorno de Hadoop y Pig, deberá estar
+completamente containerizado utilizando Docker y orquestado mediante docker-compose.yml.
+Foco del entregable: Se reitera que la evaluación se centrará únicamente en este nuevo módulo de
+análisis batch. No se requiere la entrega de los componentes de la Tarea 2 (Kafka, Flink, consumidores,
+etc.)
+
+docker-compose logs -f pig_analysis
+
+.\view-results.ps1

@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: responses_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/sql
+    networks:
+      - hadoop_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Data Loader - Carga response.json a PostgreSQL
+  dataloader:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dataloader
+    container_name: dataloader
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: responses_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./response.json:/data/response.json:ro
+      - ./scripts:/scripts:ro
+      - ./sql:/sql:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hadoop_network
+
+  # Data Exporter - Exporta datos de PostgreSQL a archivos de texto
+  dataexporter:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dataloader
+    container_name: dataexporter
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: responses_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./sql:/sql:ro
+      - hadoop_data:/data
+    depends_on:
+      - dataloader
+    command: python3 export_data.py
+    networks:
+      - hadoop_network
+
+  # Hadoop NameNode
+  namenode:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.hadoop
+    container_name: hadoop_namenode
+    hostname: namenode
+    environment:
+      - CLUSTER_NAME=hadoop_cluster
+    ports:
+      - "9870:9870"  # NameNode Web UI
+      - "9000:9000"  # HDFS
+      - "8088:8088"  # ResourceManager Web UI
+    volumes:
+      - namenode_data:/hadoop/dfs/name
+      - ./docker/hadoop-config:/config:ro
+      - ./scripts:/scripts:ro
+      - ./pig:/pig:ro
+      - ./data:/data:ro
+      - hadoop_data:/data
+    networks:
+      - hadoop_network
+    command: bash /scripts/start-namenode.sh
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9870/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Hadoop DataNode
+  datanode:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.hadoop
+    container_name: hadoop_datanode
+    hostname: datanode
+    environment:
+      - CLUSTER_NAME=hadoop_cluster
+    ports:
+      - "9864:9864"  # DataNode Web UI
+    volumes:
+      - datanode_data:/hadoop/dfs/data
+      - ./docker/hadoop-config:/config:ro
+      - ./scripts:/scripts:ro
+    depends_on:
+      namenode:
+        condition: service_healthy
+    networks:
+      - hadoop_network
+    command: bash /scripts/start-datanode.sh
+
+  # Pig Analysis Runner
+  pig_analysis:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.hadoop
+    container_name: pig_analysis
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./pig:/pig:ro
+      - ./data:/data:ro
+      - hadoop_data:/data
+      - ./docker/hadoop-config:/config:ro
+    depends_on:
+      - dataexporter
+      - namenode
+      - datanode
+    networks:
+      - hadoop_network
+    command: bash /scripts/run-analysis.sh
+
+volumes:
+  postgres_data:
+  namenode_data:
+  datanode_data:
+  hadoop_data:
+
+networks:
+  hadoop_network:
+    driver: bridge

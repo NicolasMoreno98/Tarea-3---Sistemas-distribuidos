@@ -1,0 +1,58 @@
+FROM eclipse-temurin:8-jdk
+
+# Instalar dependencias
+RUN apt-get update && apt-get install -y \
+    wget \
+    ssh \
+    rsync \
+    vim \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Descargar e instalar Hadoop
+ENV HADOOP_VERSION=3.3.6
+ENV HADOOP_HOME=/opt/hadoop
+ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
+RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar -xzf hadoop-${HADOOP_VERSION}.tar.gz && \
+    mv hadoop-${HADOOP_VERSION} ${HADOOP_HOME} && \
+    rm hadoop-${HADOOP_VERSION}.tar.gz
+
+# Descargar e instalar Pig
+ENV PIG_VERSION=0.17.0
+ENV PIG_HOME=/opt/pig
+ENV PATH=$PATH:$PIG_HOME/bin
+
+RUN wget https://dlcdn.apache.org/pig/pig-${PIG_VERSION}/pig-${PIG_VERSION}.tar.gz && \
+    tar -xzf pig-${PIG_VERSION}.tar.gz && \
+    mv pig-${PIG_VERSION} ${PIG_HOME} && \
+    rm pig-${PIG_VERSION}.tar.gz
+
+# Configurar SSH sin contraseña
+RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
+    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
+    chmod 0600 ~/.ssh/authorized_keys
+
+# Configurar variables de entorno Java
+ENV JAVA_HOME=/opt/java/openjdk
+
+# Crear directorios necesarios
+RUN mkdir -p ${HADOOP_HOME}/logs && \
+    mkdir -p /hadoop/dfs/name && \
+    mkdir -p /hadoop/dfs/data
+
+WORKDIR $HADOOP_HOME
+
+# Puerto para NameNode UI
+EXPOSE 9870
+# Puerto para DataNode
+EXPOSE 9864
+# Puerto para ResourceManager UI
+EXPOSE 8088
+# Puerto para HDFS
+EXPOSE 9000
+
+CMD ["/bin/bash"]
