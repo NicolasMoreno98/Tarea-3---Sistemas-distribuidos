@@ -16,8 +16,8 @@ echo "OK: HDFS disponible"
 echo "=== Esperando a que los datos se exporten ==="
 max_attempts=60
 attempt=0
-while [ ! -f "/data/export/human_answers.txt" ] || [ ! -f "/data/export/llm_answers.txt" ]; do
-    echo "Esperando exportación de datos... (intento $attempt/$max_attempts)"
+while [ ! -s "/data/export/human_answers.txt" ] || [ ! -s "/data/export/llm_answers.txt" ]; do
+    echo "Esperando exportacion de datos (archivos con contenido)... (intento $attempt/$max_attempts)"
     sleep 5
     attempt=$((attempt + 1))
     if [ $attempt -ge $max_attempts ]; then
@@ -119,6 +119,8 @@ echo "docker exec hadoop_namenode hdfs dfs -cat /output/comparison/part-*"
 
 echo ""
 echo "EXITO: Procesamiento completado exitosamente!"
+echo ""
+echo "El contenedor se cerrara en 10 segundos..."
+sleep 10
 
-# Mantener el contenedor vivo para inspección
-tail -f /dev/null
+# Contenedor se detiene automaticamente al finalizar el script
